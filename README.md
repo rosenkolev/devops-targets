@@ -27,70 +27,73 @@ RunAndExit(Args);
 using static DevOpsTargets.Targets;
 
 // Run all Bullseye Targets with the System.CommandLine library.
-void RunAndExit(IEnumerable<string> args, string loggerPrefix);
+RunAndExit(IEnumerable<string> args, string loggerPrefix);  // void
 
 // Get current script directory
-string GetScriptFolder();
+GetScriptFolder();  // string
 
 // Create directory if not exists
-void EnsureDirectoryExists(string path);
+EnsureDirectoryExists(string path);  // void
 
 // Remove and re-create directory.
-void CleanDirectory(string path);
+CleanDirectory(string path);  // void
 
 // Delete all passed paths
-void DeleteAllFilesAndFolders(params string[] paths);
+DeleteAllFilesAndFolders(params string[] paths);  // void
 
 // Write messages to the output.
-void Write(string message, LogLevel logLevel = LogLevel.Message);
+Write(string message, LogLevel logLevel = LogLevel.Message);  // void
 
 // Write messages to the output on a new line.
-void WriteLine(string message, LogLevel logLevel = LogLevel.Message);
+WriteLine(string message, LogLevel logLevel = LogLevel.Message);  // void
 
 // Start a shell command for the current OS.
-Command ShellCommand(string command, string workingDirectory = null, LogLevel outputLogLevel = LogLevel.Verbose, bool doubleEscapeLinux = true);
+ShellCommand(string command, string workingDirectory = null, LogLevel outputLogLevel = LogLevel.Verbose, bool doubleEscapeLinux = true);  // Command
 
 // Start a shell command for the current OS and wait result.
-string Shell(string command, string workingDirectory = null, LogLevel outputLogLevel = LogLevel.Verbose);
+Shell(string command, string workingDirectory = null, LogLevel outputLogLevel = LogLevel.Verbose);  // string
 
 // Start a shell command for the current OS and wait result if test command fail.
-string ShellInstall(string testCommand, string installCommand, string workingDirectory = null, LogLevel outputLogLevel = LogLevel.Verbose);
+ShellInstall(string testCommand, string installCommand, string workingDirectory = null, LogLevel outputLogLevel = LogLevel.Verbose);  // string
 
 // Merge transform .json into another .json
-Transform.TransformSettingsJson(string pathToSettingsJson, string pathToTransformJson); // void
+Transform.TransformSettingsJson(string pathToSettingsJson, string pathToTransformJson);  // void
 
 // Find value of a property in json.
-Transform.FindPropertyValueInJson(string pathToJson, string propertyName); // string
+Transform.FindPropertyValueInJson(string pathToJson, string propertyName);  // string
 
 // Find value in XML by xpath
-Transform.GetXmlXPathValue(string pathToXml, string xpath); // string
+Transform.GetXmlXPathValue(string pathToXml, string xpath);  // string
 
 // Replace ${value} in a text file
-Transform.ReplaceInFile(string pathToFile, string pathToNewFile, params EnvValue[] values); // void
+Transform.ReplaceInFile(string pathToFile, string pathToNewFile, params EnvValue[] values);  // void
 
 // Build csproj file
-DotNet.Build(string pathToProject, string configuration = "Debug"); // void
+DotNet.Build(string pathToProject, string configuration = "Debug");  // void
 
 // Publish csproj file
-DotNet.Publish(string pathToProject, string pathToOutput, string configuration = "Release"); // void
+DotNet.Publish(string pathToProject, string pathToOutput, string configuration = "Release");  // void
 
 // Test csproj file
-DotNet.Test(string pathToProject, string configuration = "Debug", string pathToOutput = null); // void
+DotNet.Test(string pathToProject, string configuration = "Debug", string pathToOutput = null);  // void
 
 // Test with coverage csproj file
-DotNet.TestWithCoverage(string pathToProject, string pathToOutput, string configuration = "Debug", TestCoverageFormat formats = TestCoverageFormat.Cobertura, params TestLogInfo[] loggers); // void
+DotNet.TestWithCoverage(string pathToProject, string pathToOutput, string configuration = "Debug", TestCoverageFormat formats = TestCoverageFormat.Cobertura, params TestLogInfo[] loggers);  // void
 
 // Install NodeJs version if  NodeJs was never installed.
-NodeJs.Install(string version); // void
+NodeJs.Install(string version);  // void
 
 // Execute `npm install` in folder.
-Npm.Install(string pathToFolder); // void
+Npm.Install(string pathToFolder);  // void
 
 // Execute `npm ci --no-optional ..` in folder.
-Npm.Ci(string pathToFolder, string cacheFolder = ".npm"); // void
+Npm.Ci(string pathToFolder, string cacheFolder = null");  // void
 
 // Install npm package globally is not already installed. Example InstallGlobal("@angular/cli");
-Npm.InstallGlobal(string command);
+Npm.InstallGlobal(string package);  // void
+
+// Run NPM command.
+Npm.Run(string command, string pathToFolder);  // void
 ```
 
 Also see [samples/](samples/).

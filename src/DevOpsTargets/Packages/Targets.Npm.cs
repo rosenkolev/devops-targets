@@ -11,8 +11,15 @@
                 Shell("npm install", pathToProjectOrSolutionFolder);
 
             /// <summary>Installs all packages from package.json file.</summary>
-            public static void Ci(string pathToProjectOrSolutionFolder, string cacheFolder = ".npm") =>
-                Shell($"npm ci --no-optional --cache {cacheFolder} --prefer-offline", pathToProjectOrSolutionFolder);
+            public static void Ci(string pathToProjectOrSolutionFolder, string cacheFolder = null)
+            {
+                var cache = string.IsNullOrEmpty(cacheFolder) ? string.Empty : ("--cache " + cacheFolder);
+                Shell("npm ci --no-optional --prefer-offline " + cache, pathToProjectOrSolutionFolder);
+            }
+
+            /// <summary>Run an NPM command.</summary>
+            public static void Run(string cmd, string pathToFolder) =>
+                Shell("npm run " + cmd, pathToFolder);
 
             /// <summary>Installs the global NPM package.</summary>
             public static void InstallGlobal(string command)
