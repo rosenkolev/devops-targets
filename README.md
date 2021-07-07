@@ -22,8 +22,8 @@ Target("build", "Build .NET App", DependsOn("check-version"), () => DotNet.Build
 RunAndExit(Args);
 ```
 
-## Mathods
-```
+## Methods
+```csharp
 using static DevOpsTargets.Targets;
 
 // Run all Bullseye Targets with the System.CommandLine library.
@@ -54,13 +54,13 @@ Command ShellCommand(string command, string workingDirectory = null, LogLevel ou
 string Shell(string command, string workingDirectory = null, LogLevel outputLogLevel = LogLevel.Verbose);
 
 // Start a shell command for the current OS and wait result if test command fail.
-string ShellInstall(string testcommand, string installcommand, string workingDirectory = null, LogLevel outputLogLevel = LogLevel.Verbose);
+string ShellInstall(string testCommand, string installCommand, string workingDirectory = null, LogLevel outputLogLevel = LogLevel.Verbose);
 
 // Merge transform .json into another .json
 Transform.TransformSettingsJson(string pathToSettingsJson, string pathToTransformJson); // void
 
-// Find value of a propery in json.
-Transform.FindProperyValueInJson(string pathToJson, string propertyName); // string
+// Find value of a property in json.
+Transform.FindPropertyValueInJson(string pathToJson, string propertyName); // string
 
 // Find value in XML by xpath
 Transform.GetXmlXPathValue(string pathToXml, string xpath); // string
@@ -79,6 +79,18 @@ DotNet.Test(string pathToProject, string configuration = "Debug", string pathToO
 
 // Test with coverage csproj file
 DotNet.TestWithCoverage(string pathToProject, string pathToOutput, string configuration = "Debug", TestCoverageFormat formats = TestCoverageFormat.Cobertura, params TestLogInfo[] loggers); // void
+
+// Install NodeJs version if  NodeJs was never installed.
+NodeJs.Install(string version); // void
+
+// Execute `npm install` in folder.
+Npm.Install(string pathToFolder); // void
+
+// Execute `npm ci --no-optional ..` in folder.
+Npm.Ci(string pathToFolder, string cacheFolder = ".npm"); // void
+
+// Install npm package globally is not already installed. Example InstallGlobal("@angular/cli");
+Npm.InstallGlobal(string command);
 ```
 
 Also see [samples/](samples/).

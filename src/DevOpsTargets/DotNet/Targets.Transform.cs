@@ -32,8 +32,8 @@ namespace DevOpsTargets
                 File.WriteAllText(pathToSettingsJson, transformedContent);
             }
 
-            /// <summary>Finds the propery value in a json.</summary>
-            public static string FindProperyValueInJson(string pathToJson, string propertyName)
+            /// <summary>Finds the property value in a json.</summary>
+            public static string FindPropertyValueInJson(string pathToJson, string propertyName)
             {
                 var sourceJson = ReadJsonFile(pathToJson) as JToken;
                 var paths = propertyName.Split('.');
