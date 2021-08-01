@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup Label="Globals">
+    <TargetFramework>net5.0</TargetFramework>
+    <Version>1.0.0</Version>
+    <Product>DevOpsTargets.Terminal</Product>
+    <PackageId>DevOpsTargets.Terminal</PackageId>
+    <Authors>Rosen Kolev</Authors>
+    <Description>A terminal wrapper that uses the os native terminal to send and execute commands.</Description>
+    <RepositoryUrl>https://github.com/rosenkolev/devops-targets</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>devops,terminal,shell</PackageTags>
+    <PackageProjectUrl>https://github.com/rosenkolev/devops-targets</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageIcon>icon-128.png</PackageIcon>
+    <Copyright>Copyright 2021 (c) Rosen Kolev</Copyright>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Label="Code Analysis">
+    <AnalysisLevel>latest</AnalysisLevel>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)'=='Debug'">..\tools\analizers.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)'=='Release'">..\tools\analizers.disable.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup Label="NuGet Packages">
+  </ItemGroup>
+  <ItemGroup Label="Projects and Files Reference">
+    <AdditionalFiles Include="..\tools\stylecop.json" />
+    <None Include="..\..\resources\icons\icon-128.png" Pack="true" PackagePath="" />
+  </ItemGroup>
+  <ItemGroup Label="Code Analyzers">
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.*" PrivateAssets="All" />
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.25.0.*" PrivateAssets="All" />
+    <PackageReference Include="CodeCracker.CSharp" Version="1.1.*" PrivateAssets="All" />
+    <PackageReference Include="RefactoringEssentials" Version="5.6.*" PrivateAssets="All" />
+    <PackageReference Include="Menees.Analyzers" Version="3.0.*" PrivateAssets="All" />
+  </ItemGroup>
+</Project>

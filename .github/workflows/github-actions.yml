@@ -25,11 +25,17 @@ jobs:
         if: ${{ always() }}
       - name: Upload dotnet test coverage
         run: bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }} -f TestResults/coverage.opencover.xml
-      - name: Build with dotnet
-        run: dotnet build --no-restore --configuration Release src/DevOpsTargets/DevOpsTargets.csproj
-      - name: Create the package
-        run: dotnet pack --no-restore --configuration Release src/DevOpsTargets/DevOpsTargets.csproj
+      - name: Build with dotnet Targets
+        run: dotnet build --no-restore --configuration Release src/DevOps.Targets/DevOps.Targets.csproj
+      - name: Create the package Terminal
+        run: dotnet pack --no-restore --configuration Release src/DevOps.Terminal/DevOps.Terminal.csproj
+      - name: Create the package Targets
+        run: dotnet pack --no-restore --configuration Release src/DevOps.Targets/DevOps.Targets.csproj
       - name: Publish the package to nuget.org
-        run: dotnet nuget push src/DevOpsTargets/bin/Release/*.nupkg -k $NUGET_AUTH_TOKEN -s https://api.nuget.org/v3/index.json
+        run: dotnet nuget push src/DevOps.Terminal/bin/Release/*.nupkg -k $NUGET_AUTH_TOKEN -s https://api.nuget.org/v3/index.json
+        env:
+          NUGET_AUTH_TOKEN: ${{ secrets.NUGET_TOKEN }}
+      - name: Publish the package to nuget.org
+        run: dotnet nuget push src/DevOps.Targets/bin/Release/*.nupkg -k $NUGET_AUTH_TOKEN -s https://api.nuget.org/v3/index.json
         env:
           NUGET_AUTH_TOKEN: ${{ secrets.NUGET_TOKEN }}
