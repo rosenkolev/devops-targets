@@ -9,7 +9,7 @@ namespace DevOps.Terminal.Loggers
     public sealed class TextOutput : IOutput
     {
         /// <summary>Gets the logger.</summary>
-        internal ScopeLogger Logger { get; private set; } = new ScopeLogger();
+        public ScopeLogger Logger { get; private set; } = new ScopeLogger();
 
         /// <inheritdoc/>
         public void Write(string message, LogLevel logLevel)
@@ -37,7 +37,7 @@ namespace DevOps.Terminal.Loggers
             Logger = new ScopeLogger();
 
         /// <summary>A scope logger.</summary>
-        internal class ScopeLogger
+        public class ScopeLogger
         {
             private readonly StringBuilder _lastStandardOutput = new StringBuilder();
             private readonly StringBuilder _lastStandardError = new StringBuilder();

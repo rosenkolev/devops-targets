@@ -16,16 +16,6 @@ namespace DevOps.Tests
         }
 
         [TestMethod]
-        public void ShellShouldSetEnvVars()
-        {
-            LoggerTests.InitNullLogger();
-            Targets.Shell("setx LOG_FORMAT console");
-            var envs = System.Environment.GetEnvironmentVariables(System.EnvironmentVariableTarget.User);
-            var env = envs["LOG_FORMAT"];
-            Assert.AreEqual("console", env);
-        }
-
-        [TestMethod]
         public void TerminalShouldExec()
         {
             LoggerTests.InitNullLogger();
