@@ -23,12 +23,12 @@ namespace DevOps.Terminal.Commands
         internal List<IOutput> Outputs { get; init; }
 
         /// <summary>Logs the output.</summary>
-        [SuppressMessage("Redundancies in Symbol Declarations", "RECS0154:Parameter is never used", Justification = "Based on DataReceived event")]
+        [SuppressMessage("Redundancies in Symbol Declarations", "RECS0154", Justification = "Based on DataReceived event")]
         public void LogOutput(object sender, DataReceivedEventArgs e) =>
             Outputs.ForEach(l => l.WriteLine(e.Data, LogLevel));
 
         /// <summary>Logs the error.</summary>
-        [SuppressMessage("Redundancies in Symbol Declarations", "RECS0154:Parameter is never used", Justification = "Based on DataReceived event")]
+        [SuppressMessage("Redundancies in Symbol Declarations", "RECS0154", Justification = "Based on DataReceived event")]
         public void LogError(object sender, DataReceivedEventArgs e) =>
             Outputs.ForEach(l => l.WriteLine(e.Data, LogLevel.Error));
 

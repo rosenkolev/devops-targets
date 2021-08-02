@@ -29,7 +29,7 @@
   </PropertyGroup>
   <ItemGroup Label="NuGet Packages">
     <PackageReference Include="System.CommandLine" Version="2.0.0-beta1.21308.1" />
-    <PackageReference Include="Bullseye" Version="3.7.0" />
+    <PackageReference Include="Bullseye" Version="3.7.*" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
   <ItemGroup Label="Projects and Files Reference">
@@ -38,8 +38,8 @@
     <None Include="..\..\resources\icons\icon-128.png" Pack="true" PackagePath="" />
   </ItemGroup>
   <ItemGroup Label="Code Analyzers">
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.*" PrivateAssets="All" />
-    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.25.0.*" PrivateAssets="All" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta*" PrivateAssets="All" />
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.26.0.*" PrivateAssets="All" />
     <PackageReference Include="CodeCracker.CSharp" Version="1.1.*" PrivateAssets="All" />
     <PackageReference Include="RefactoringEssentials" Version="5.6.*" PrivateAssets="All" />
     <PackageReference Include="Menees.Analyzers" Version="3.0.*" PrivateAssets="All" />

@@ -4,6 +4,7 @@ using System.Text;
 
 namespace DevOps.Terminal.Terminals.Syntax
 {
+    /// <summary>The /bin/sh syntax.</summary>
     public class UnixShSyntax : TerminalCommandSyntax
     {
         /// <inheritdoc/>
@@ -24,7 +25,7 @@ namespace DevOps.Terminal.Terminals.Syntax
 
         /// <summary>
         /// Appends the command argument.
-        /// Based on syntax madelson/MedallionShell library.
+        /// Based on syntax MedallionShell library.
         /// </summary>
         private static void AppendArgument(string argument, StringBuilder builder)
         {

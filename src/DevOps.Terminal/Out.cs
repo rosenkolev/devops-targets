@@ -5,6 +5,7 @@ using DevOps.Terminal.Loggers.Host;
 
 namespace DevOps.Terminal
 {
+    /// <summary>The host output generic methods.</summary>
     public static class Out
     {
         private static HostOutput _consoleOutput;

@@ -21,7 +21,7 @@ namespace DevOps.Terminal.Commands
         {
             if (command.ExitCode != exitCode)
             {
-                throw new Exception("Exit code is not " + exitCode);
+                throw new ExitCodeException(exitCode);
             }
         }
 

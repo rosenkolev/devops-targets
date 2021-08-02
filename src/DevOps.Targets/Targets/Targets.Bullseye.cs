@@ -16,7 +16,7 @@ namespace DevOps
     public static partial class Targets
     {
         /// <summary>The extra command line options.</summary>
-        internal static readonly List<Option> ExtraOptions = new List<Option>();
+        internal static readonly List<Option> ExtraOptions = new();
 
         /// <summary>Gets the command line options result.</summary>
         public static Result OptionsResults { get; private set; }

@@ -22,6 +22,19 @@ namespace DevOps
             OpenCover = 2,
         }
 
+        private static IEnumerable<string> GetCoverageReportFormats(TestCoverageFormat formats)
+        {
+            if ((formats & TestCoverageFormat.Cobertura) == TestCoverageFormat.Cobertura)
+            {
+                yield return "cobertura";
+            }
+
+            if ((formats & TestCoverageFormat.OpenCover) == TestCoverageFormat.OpenCover)
+            {
+                yield return "opencover";
+            }
+        }
+
         /// <summary>.NET tasks.</summary>
         public static class DotNet
         {
@@ -86,7 +99,6 @@ namespace DevOps
         }
 
         /// <summary>Tests logger info.</summary>
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313", Justification = "record")]
         public record TestLogInfo(string Name, string PathProp, string FileName, string Params)
         {
             /// <summary>Builds the specified path to output.</summary>
@@ -101,23 +113,10 @@ namespace DevOps
         public static class DotNetLoggers
         {
             /// <summary>The MSTest logger.</summary>
-            public static readonly TestLogInfo Trx = new TestLogInfo("trx", "LogFileName", "dotnet.results.trx", string.Empty);
+            public static readonly TestLogInfo Trx = new("trx", "LogFileName", "dotnet.results.trx", string.Empty);
 
             /// <summary>The JUnit logger.</summary>
-            public static readonly TestLogInfo JUnit = new TestLogInfo("junit", "LogFilePath", "dotnet.results.xml", ";MethodFormat=Class;FailureBodyFormat=Verbose");
-        }
-
-        private static IEnumerable<string> GetCoverageReportFormats(TestCoverageFormat formats)
-        {
-            if ((formats & TestCoverageFormat.Cobertura) == TestCoverageFormat.Cobertura)
-            {
-                yield return "cobertura";
-            }
-
-            if ((formats & TestCoverageFormat.OpenCover) == TestCoverageFormat.OpenCover)
-            {
-                yield return "opencover";
-            }
+            public static readonly TestLogInfo JUnit = new("junit", "LogFilePath", "dotnet.results.xml", ";MethodFormat=Class;FailureBodyFormat=Verbose");
         }
     }
 }

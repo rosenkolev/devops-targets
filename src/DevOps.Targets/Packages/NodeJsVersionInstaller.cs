@@ -8,7 +8,7 @@ namespace DevOps.Packages
     /// <summary>NodeJs installer.</summary>
     public static class NodeJsVersionInstaller
     {
-        private static readonly Regex VersionRegex = new (@"^\d+\.\d+\.\d+$", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
+        private static readonly Regex VersionRegex = new(@"^\d+\.\d+\.\d+$", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
         /// <summary>Installs Node on linux.</summary>
         public static void InstallLinux(string version)

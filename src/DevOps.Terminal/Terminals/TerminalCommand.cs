@@ -5,6 +5,7 @@ using DevOps.Terminal.Loggers.Abstraction;
 
 namespace DevOps.Terminal.Terminals
 {
+    /// <summary>Terminal execute command.</summary>
     public class TerminalCommand
     {
         private Queue<TerminalCommand> _pipe;

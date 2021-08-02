@@ -50,6 +50,7 @@ namespace DevOps.Terminal.Loggers.Host
             Message = brightYellow;
             Error = brightRed;
             None = brightBlue;
+            Success = green;
         }
 
         /// <summary>Gets the reset.</summary>
@@ -75,5 +76,8 @@ namespace DevOps.Terminal.Loggers.Host
 
         /// <summary>Gets the none.</summary>
         public string None { get; init; }
+
+        /// <summary>Gets the success.</summary>
+        public string Success { get; init; }
     }
 }

@@ -4,8 +4,10 @@ using StartInfo = System.Diagnostics.ProcessStartInfo;
 
 namespace DevOps.Terminal.Commands
 {
+    /// <summary>ProcessStartInfo factory.</summary>
     public static class ProcessStartInfoFactory
     {
+        /// <summary>Create new StartInfo based on command and arguments.</summary>
         public static StartInfo Create(string command, string arguments, string workingDirectory)
         {
             Validate(command);

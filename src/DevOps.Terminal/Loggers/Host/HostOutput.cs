@@ -71,10 +71,10 @@ namespace DevOps.Terminal.Loggers.Host
         private string Message(string color, string text) => string.Concat(Prefix, color, text, _p.Reset);
 
         private string CleanUp(string message) => message
-            .Replace("[0m", string.Empty)
-            .Replace("[32m", string.Empty)
-            .Replace("[39m", string.Empty)
-            .Replace("[94m", string.Empty)
-            .Replace("[96m", string.Empty);
+            .Replace("\u001B[0m", string.Empty)
+            .Replace("\u001B[32m", string.Empty)
+            .Replace("\u001B[39m", string.Empty)
+            .Replace("\u001B[94m", string.Empty)
+            .Replace("\u001B[96m", string.Empty);
     }
 }

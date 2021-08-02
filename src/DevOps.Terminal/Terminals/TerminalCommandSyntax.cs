@@ -4,6 +4,7 @@ using System.Text;
 
 namespace DevOps.Terminal.Terminals
 {
+    /// <summary>The bastract terminal syntax class.</summary>
     public abstract class TerminalCommandSyntax
     {
         /// <summary>Gets the name of the command.</summary>

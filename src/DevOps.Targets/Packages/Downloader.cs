@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Net;
 
 namespace DevOps.Packages
@@ -14,6 +15,7 @@ namespace DevOps.Packages
             Path.Combine(ToolsDirectory, $"{name}.{version}", packageFilePath);
 
         /// <summary>Downloads the file.</summary>
+        [SuppressMessage("Usage", "CC0022:Should dispose object", Justification = "Short using is not supported")]
         public static string DownloadFile(string name, string version, string fileName, string url)
         {
             var pathToDirectory = GetToolPath(name, version, string.Empty);

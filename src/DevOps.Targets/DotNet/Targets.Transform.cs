@@ -11,7 +11,6 @@ namespace DevOps
     public static partial class Targets
     {
         /// <summary>Envs the value record.</summary>
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313", Justification = "records")]
         public record EnvValue(string Key, string Value);
 
         /// <summary>Transform test, json and xml files.</summary>

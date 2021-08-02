@@ -4,6 +4,7 @@ using System.Text;
 
 namespace DevOps.Terminal.Terminals.Syntax
 {
+    /// <summary>The windows cmd.exe syntax.</summary>
     public class WindowsCmdSyntax : TerminalCommandSyntax
     {
         private static readonly string TerminalInWildcard = "*>";
@@ -31,7 +32,7 @@ namespace DevOps.Terminal.Terminals.Syntax
 
         /// <summary>
         /// Appends the command argument.
-        /// Based on syntax madelson/MedallionShell library.
+        /// Based on syntax MedallionShell library.
         /// </summary>
         private static void AppendArgument(string argument, StringBuilder builder)
         {

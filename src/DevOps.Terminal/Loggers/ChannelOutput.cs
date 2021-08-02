@@ -6,6 +6,7 @@ using DevOps.Terminal.Loggers.Abstraction;
 
 namespace DevOps.Terminal.Loggers
 {
+    /// <summary>A channel/pipe output.</summary>
     public class ChannelOutput : IOutput, IInput
     {
         /// <summary>Gets the logger.</summary>
@@ -36,6 +37,7 @@ namespace DevOps.Terminal.Loggers
         public void Reset() =>
             Logger = new ScopeLogger();
 
+        /// <summary>Channel scope logger.</summary>
         internal class ScopeLogger
         {
             private readonly ConcurrentQueue<OutputMessage> _queue = new ConcurrentQueue<OutputMessage>();
