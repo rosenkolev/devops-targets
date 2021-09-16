@@ -14,7 +14,7 @@ namespace DevOps.Packages
             UnixInstallJabba();
 
             var ls = Targets.Exec("jabba ls " + version, Targets.LogLevel.Debug, null);
-            if (ls.ExitCode == 0)
+            if (ls.Output.Contains(version, StringComparison.InvariantCultureIgnoreCase))
             {
                 Targets.WriteLine($"JAVA {version} is installed.");
                 Targets.Exec("jabba use " + version);

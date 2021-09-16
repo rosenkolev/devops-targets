@@ -1,13 +1,11 @@
 ﻿using System.IO;
 
-using Bullseye;
-
 using DevOps.Terminal;
 using DevOps.Terminal.Loggers.Host;
 
-using HostLogLevel = DevOps.Terminal.Loggers.Abstraction.LogLevel;
-
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using HostLogLevel = DevOps.Terminal.Loggers.Abstraction.LogLevel;
 
 namespace DevOps.Tests
 {

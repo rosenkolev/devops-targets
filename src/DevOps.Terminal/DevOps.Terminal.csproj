@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup Label="Globals">
     <TargetFramework>net5.0</TargetFramework>
-    <Version>1.0.0</Version>
+    <Version>1.1.1</Version>
     <Product>DevOpsTargets.Terminal</Product>
     <PackageId>DevOpsTargets.Terminal</PackageId>
     <Authors>Rosen Kolev</Authors>
@@ -11,13 +11,13 @@
     <PackageTags>devops,terminal,shell</PackageTags>
     <PackageProjectUrl>https://github.com/rosenkolev/devops-targets</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile Condition="'$(PACK_README)'=='true'">README.md</PackageReadmeFile>
     <PackageIcon>icon-128.png</PackageIcon>
     <Copyright>Copyright 2021 (c) Rosen Kolev</Copyright>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <NoWarn>$(NoWarn);1591</NoWarn>
+    <DisableImplicitNamespaceImports>true</DisableImplicitNamespaceImports>
   </PropertyGroup>
   <PropertyGroup Label="Code Analysis">
     <AnalysisLevel>latest</AnalysisLevel>
@@ -30,11 +30,12 @@
   </ItemGroup>
   <ItemGroup Label="Projects and Files Reference">
     <AdditionalFiles Include="..\tools\stylecop.json" />
-    <None Include="..\..\resources\icons\icon-128.png" Pack="true" PackagePath="" />
+    <None Include="..\..\resources\icons\icon-128.png" Pack="true" PackagePath="" Link="Properties\icon-128.png" />
+    <None Include="..\..\README.TERMINAL.md" Pack="true" PackagePath="README.md" Link="Properties\README.md" />
   </ItemGroup>
   <ItemGroup Label="Code Analyzers">
     <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta*" PrivateAssets="All" />
-    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.26.0.*" PrivateAssets="All" />
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.29.0.*" PrivateAssets="All" />
     <PackageReference Include="CodeCracker.CSharp" Version="1.1.*" PrivateAssets="All" />
     <PackageReference Include="RefactoringEssentials" Version="5.6.*" PrivateAssets="All" />
     <PackageReference Include="Menees.Analyzers" Version="3.0.*" PrivateAssets="All" />

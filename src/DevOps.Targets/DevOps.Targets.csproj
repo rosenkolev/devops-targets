@@ -1,8 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup Label="Globals">
     <TargetFramework>net5.0</TargetFramework>
-    <Version>1.1.0</Version>
+    <Version>1.1.1</Version>
     <Product>DevOpsTargets</Product>
+    <RootNamespace>DevOps</RootNamespace>
     <PackageId>DevOpsTargets</PackageId>
     <Authors>Rosen Kolev</Authors>
     <Description>A tools that are helping when deploying .NET and other applications.</Description>
@@ -11,14 +12,13 @@
     <PackageTags>devops,targets,build-scripts,deploy</PackageTags>
     <PackageProjectUrl>https://github.com/rosenkolev/devops-targets</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile Condition="'$(PACK_README)'=='true'">README.md</PackageReadmeFile>
     <PackageIcon>icon-128.png</PackageIcon>
     <Copyright>Copyright 2021 (c) Rosen Kolev</Copyright>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <IncludeSymbols>true</IncludeSymbols>
+    <DisableImplicitNamespaceImports>true</DisableImplicitNamespaceImports>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <NoWarn>$(NoWarn);1591</NoWarn>
-    <RootNamespace>DevOps</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Label="Code Analysis">
     <AnalysisLevel>latest</AnalysisLevel>
@@ -34,7 +34,8 @@
   <ItemGroup Label="Projects and Files Reference">
     <ProjectReference Include="..\DevOps.Terminal\DevOps.Terminal.csproj" />
     <AdditionalFiles Include="..\tools\stylecop.json" />
-    <None Include="..\..\resources\icons\icon-128.png" Pack="true" PackagePath="" />
+    <None Include="..\..\resources\icons\icon-128.png" Pack="true" PackagePath="" Link="Properties\icon-128.png" />
+    <None Include="..\..\README.md" Pack="true" PackagePath="" Link="Properties\README.md" />
   </ItemGroup>
   <ItemGroup Label="Code Analyzers">
     <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta*" PrivateAssets="All" />
