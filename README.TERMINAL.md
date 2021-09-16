@@ -10,17 +10,17 @@ TerminalSingelton.DefaultTerminal.Exec(
 	TerminalCommand.CreateParse("echo test"));
 
 // pipe
-TerminalSingelton.DefaultTerminal.Exec(
+TerminalSingleton.DefaultTerminal.Exec(
 	TerminalCommand.Cd("/src") &&
 	TerminalCommand.CreateParse("ls .") &&
 	TerminalCommand.CreateParse("ping ..."));
 
-TerminalSingelton.DefaultTerminal.Exec(
+TerminalSingleton.DefaultTerminal.Exec(
 	TerminalCommand.Cd("/src") &&
 	TerminalCommand.CreateParse("ls .") &&
 	TerminalCommand.CreateParse("ping ..."));
 
-var result = TerminalSingelton.DefaultTerminal.ExecuteCommand(
+var result = TerminalSingleton.DefaultTerminal.ExecuteCommand(
 	new [] { "dotnet", "test" });
 
 // result.ExitCode == 0

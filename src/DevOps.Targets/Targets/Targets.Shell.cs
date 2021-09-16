@@ -36,7 +36,7 @@ namespace DevOps
         /// <summary>Execute a shell command in any OS.</summary>
         public static CommandResult ExecRaw(string command, int? validExitCode = 0)
         {
-            var result = TerminalSingelton.DefaultTerminal.ExecuteCommand(new[] { command }, null, true);
+            var result = TerminalSingleton.DefaultTerminal.ExecuteCommand(new[] { command }, null, true);
             if (validExitCode.HasValue)
             {
                 result.ThrowOnExitCode(validExitCode.Value);
@@ -59,7 +59,7 @@ namespace DevOps
 
         /// <summary>Execute a shell command in any OS.</summary>
         public static CommandResult Exec(TerminalCommand command, int? validExitCode = 0) =>
-            ExecInTerminal(command, TerminalSingelton.DefaultTerminal, validExitCode);
+            ExecInTerminal(command, TerminalSingleton.DefaultTerminal, validExitCode);
 
         /// <summary>Execute a shell command in any OS.</summary>
         public static CommandResult Exec(string script, LogLevel? logLevel = null, int? validExitCode = 0) =>
