@@ -6,7 +6,7 @@ Example
 ```csharp
 using DevOps.Terminal.Terminals;
 // ...
-TerminalSingelton.DefaultTerminal.Exec(
+TerminalSingleton.DefaultTerminal.Exec(
 	TerminalCommand.CreateParse("echo test"));
 
 // pipe
