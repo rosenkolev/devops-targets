@@ -1,9 +1,11 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Text;
+using System.Text.Json;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
-using Newtonsoft.Json.Linq;
+using DevOps.SystemJson;
 
 namespace DevOps
 {
@@ -16,16 +18,19 @@ namespace DevOps
         /// <summary>Transform test, json and xml files.</summary>
         public static class Transform
         {
+            /// <summary>Merge two json files.</summary>
+            public static string MergeJsonFiles(string originalJsonFileName, string newJsonFileName, MergeOptions options = null)
+            {
+                var originalContent = (MergeJsonObject)File.ReadAllText(originalJsonFileName);
+                var newContent = (MergeJsonObject)File.ReadAllText(newJsonFileName);
+                return originalContent.Merge(newContent, options);
+            }
+
             /// <summary>Transforms the settings.json.</summary>
-            public static void TransformSettingsJson(string pathToSettingsJson, string pathToTransformJson)
+            public static void TransformSettingsJson(string pathToSettingsJson, string pathToTransformJson, MergeOptions options = null)
             {
                 WriteLine("Transforming file " + pathToSettingsJson);
-                var sourceJson = ReadJsonFile(pathToSettingsJson);
-                var transformJson = ReadJsonFile(pathToTransformJson);
-
-                sourceJson.Merge(transformJson);
-
-                var transformedContent = sourceJson.ToString();
+                var transformedContent = MergeJsonFiles(pathToSettingsJson, pathToTransformJson, options);
                 WriteLine("Transformed file content " + transformedContent, LogLevel.Debug);
 
                 File.WriteAllText(pathToSettingsJson, transformedContent);
@@ -34,19 +39,21 @@ namespace DevOps
             /// <summary>Finds the property value in a json.</summary>
             public static string FindPropertyValueInJson(string pathToJson, string propertyName)
             {
-                var sourceJson = ReadJsonFile(pathToJson) as JToken;
+                var sourceJsonContent = File.ReadAllText(pathToJson);
+                using var jsonDocument = JsonDocument.Parse(sourceJsonContent);
+                var jsonElement = jsonDocument.RootElement;
                 var paths = propertyName.Split('.');
                 foreach (var path in paths)
                 {
-                    if (sourceJson == null)
+                    if (!jsonElement.TryGetProperty(path, out jsonElement))
                     {
+                        WriteLine($"Search of {propertyName} didn't find {path}!", LogLevel.Info);
                         return null;
                     }
-
-                    sourceJson = sourceJson[path];
                 }
 
-                return (string)sourceJson;
+                WriteLine($"Property {propertyName} found", LogLevel.Info);
+                return jsonElement.ToString();
             }
 
             /// <summary>Gets the XML xpath value.</summary>
@@ -69,9 +76,6 @@ namespace DevOps
 
                 File.WriteAllText(pathToNewFile ?? pathToFile, transformedContent);
             }
-
-            private static JObject ReadJsonFile(string pathToSettingsJson) =>
-                JObject.Parse(File.ReadAllText(pathToSettingsJson));
         }
     }
 }
