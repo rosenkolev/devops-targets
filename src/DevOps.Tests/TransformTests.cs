@@ -13,6 +13,7 @@ namespace DevOps.Tests
         [TestMethod]
         public void FindPropertyValueInJsonShouldFind()
         {
+            LoggerTests.InitNullLogger();
             var fileName = CreateJsonFile("{\"first\":{\"second\":5}}");
             
             var data = Transform.FindPropertyValueInJson(fileName, "first.second");
@@ -25,9 +26,10 @@ namespace DevOps.Tests
         [TestMethod]
         public void FindPropertyValueInJsonShouldNotFind()
         {
+            LoggerTests.InitNullLogger();
             var fileName = CreateJsonFile("{\"first\":{\"second\":5}}");
 
-            var data = Transform.FindPropertyValueInJson(fileName, "first.noprop");
+            var data = Transform.FindPropertyValueInJson(fileName, "first.unknown");
 
             File.Delete(fileName);
 
@@ -37,6 +39,7 @@ namespace DevOps.Tests
         [TestMethod]
         public void TransformSettingsJsonShouldOverride()
         {
+            LoggerTests.InitNullLogger();
             var fileName = CreateJsonFile("{\"first\":{\"second\":5,\"left\":1}}");
             var fileName2 = CreateJsonFile("{\"first\":{\"second\":6,\"right\":2}}");
 
@@ -53,6 +56,7 @@ namespace DevOps.Tests
         [TestMethod]
         public void GetXmlXPathValueShouldFind()
         {
+            LoggerTests.InitNullLogger();
             var fileName = CreateXmlFile("<root><first><second>500</second></first></root>");
 
             var data = Transform.GetXmlXPathValue(fileName, "/first/second");
