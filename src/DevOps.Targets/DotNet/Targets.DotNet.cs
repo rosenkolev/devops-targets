@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 
@@ -36,7 +35,7 @@ namespace DevOps
         }
 
         /// <summary>.NET tasks.</summary>
-        public static class DotNet
+        public static partial class DotNet
         {
             /// <summary>Builds the specified project.</summary>
             public static void Build(string pathToProject, string configuration = "Debug") =>

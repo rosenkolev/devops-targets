@@ -1,6 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Text;
+
+using DevOps.Terminal.Terminals;
 
 namespace DevOps
 {
@@ -34,13 +37,42 @@ namespace DevOps
                 File.Copy(pathToTransformedSonarqube, pathToMySettings, true);
             }
 
-            /// <summary>Sets the NODE_PATH env var.</summary>
-            public static void SetNodePath()
+            /// <summary>Run a sonarscanner begin to end.</summary>
+            public static void RunScanner(
+                Action buildAction,
+                string workingDirectory,
+                string key,
+                string organization = null,
+                string version = null,
+                string branch = null)
             {
-                var pathToGlobalNodeModules = Exec("npm root -g");
+                var builder = new StringBuilder("dotnet sonarscanner begin /k:");
+                builder.Append(key);
+                if (organization != null)
+                {
+                    builder.Append(" /o:");
+                    builder.Append(organization);
+                }
 
-                WriteLine("Set env variable NODE_PATH to " + pathToGlobalNodeModules.Output, LogLevel.Info);
-                Environment.SetEnvironmentVariable("NODE_PATH", pathToGlobalNodeModules.Output);
+                if (version != null)
+                {
+                    builder.Append(" /v:");
+                    builder.Append(version);
+                }
+
+                if (branch != null)
+                {
+                    builder.Append(" /d:sonar.branch.name=");
+                    builder.Append(branch);
+                }
+
+                Exec(
+                    TerminalCommand.Cd(workingDirectory) &
+                    TerminalCommand.CreateParse("dotnet sonarscanner begin " + builder, null));
+
+                buildAction?.Invoke();
+
+                Exec(TerminalCommand.CreateParse("dotnet sonarscanner end", null));
             }
         }
     }

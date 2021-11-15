@@ -11,8 +11,8 @@ namespace DevOps.Tests
         public void ShellShouldExec()
         {
             LoggerTests.InitNullLogger();
-            var result = Targets.Shell("echo shell test");
-            Assert.AreEqual("shell test", result);
+            var result = Targets.CommandExec("echo shell test");
+            Assert.AreEqual("shell test", result.TextOutput);
         }
 
         [TestMethod]

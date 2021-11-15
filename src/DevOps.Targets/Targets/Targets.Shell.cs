@@ -1,4 +1,6 @@
-﻿using DevOps.Terminal.Commands;
+﻿using System.Globalization;
+
+using DevOps.Terminal.Commands;
 using DevOps.Terminal.Terminals;
 
 using DevOpsTerminal = DevOps.Terminal.Terminals.Terminal;
@@ -10,7 +12,7 @@ namespace DevOps
     public static partial class Targets
     {
         /// <summary>Execute a shell command in any OS.</summary>
-        public static Command ShellStart(
+        public static Command CommandStart(
             string command,
             string workingDirectory = null,
             LogLevel outputLogLevel = LogLevel.Verbose)
@@ -18,18 +20,24 @@ namespace DevOps
             var syntax = DevOpsTerminal.DefaultTerminalSyntax;
             var cmd = TerminalCommand.CreateParse(command, null);
             var args = syntax.BuildCommand(cmd.CommandArguments);
-            var commandArgs = string.Format(syntax.CommandArguments, args);
+            var commandArgs = string.Format(CultureInfo.InvariantCulture, syntax.CommandArguments, args);
             return Command.CreateAndStart(syntax.CommandName, commandArgs, workingDirectory, (HostLogLevel)outputLogLevel);
         }
 
         /// <summary>Execute a shell command in any OS.</summary>
-        public static Command ShellCommand(
+        public static Command CommandExec(
             string command,
             string workingDirectory = null,
-            LogLevel outputLogLevel = LogLevel.Verbose)
+            LogLevel outputLogLevel = LogLevel.Verbose,
+            int? validExitCode = 0)
         {
-            var cmd = ShellStart(command, workingDirectory, outputLogLevel);
+            var cmd = CommandStart(command, workingDirectory, outputLogLevel);
             cmd.WaitForResult();
+            if (validExitCode.HasValue)
+            {
+                cmd.FailWhenExitCode(validExitCode.Value);
+            }
+
             return cmd;
         }
 
@@ -72,25 +80,5 @@ namespace DevOps
             Exec(
                 TerminalCommand.Cd(workingDirectory) &
                 TerminalCommand.CreateParse(script, null));
-
-        /// <summary>Execute a shell command in any OS.</summary>
-        public static string Shell(string command, string workingDirectory = null, LogLevel outputLogLevel = LogLevel.Verbose)
-        {
-            var com = ShellCommand(command, workingDirectory, outputLogLevel);
-            com.FailWhenExitCode(0);
-            return com.TextOutput;
-        }
-
-        /// <summary>Execute the install command, in case the test command fail.</summary>
-        public static string ShellInstall(string testcommand, string installcommand, string workingDirectory = null, LogLevel outputLogLevel = LogLevel.Verbose)
-        {
-            var command = ShellCommand(testcommand, workingDirectory, outputLogLevel);
-            if (command.ExitCode == 0)
-            {
-                return null;
-            }
-
-            return Shell(installcommand, workingDirectory);
-        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -116,8 +117,8 @@ namespace DevOps.Terminal.Terminals
 
             var skipLines = _syntax.BuildInputClearWildCards(execution.Command, statusCodeCommand).ToArray();
             var outputResult = _monitor.WaitForResult(prefix + '*', skipLines);
-            var code = outputResult.Substring(prefix.Length);
-            var statusCode = Convert.ToInt32(code);
+            var code = outputResult[prefix.Length..];
+            var statusCode = Convert.ToInt32(code, CultureInfo.InvariantCulture);
             var output = _monitor.Output.Trim(' ', '\r', '\n');
             var result = new CommandResult(output, statusCode);
 

@@ -9,7 +9,7 @@
 
 Use with dotnet script;
 ```csharp
-#! "net5.0"
+#! "net6.0"
 #r "nuget:DevOpsTargets"
 
 using System.IO;
@@ -17,83 +17,151 @@ using static Bullseye.Targets;
 using static DevOpsTargets.Targets;
 
 var pathToApp = Path.Combine(GetScriptFolder(), "MyApp");
-Target("check-version", "Check .NET CLI version", () => Shell("dotnet --version"));
-Target("build", "Build .NET App", DependsOn("check-version"), () => DotNet.Build(pathToApp));
-RunAndExit(Args);
+Target("check-version", "Check .NET CLI version", () => Exec("dotnet --version"));
+Target("build", "Build .NET App", DependsOn("check-version"), () => WriteLine("Do some work"));
+
+// Run all Bullseye Targets with the System.CommandLine library.
+RunAndExit(Args, loggerPrefix: "My App");
 ```
 
 ## Methods
+
+### Write Messages
 ```csharp
-using static DevOpsTargets.Targets;
+    using static DevOpsTargets.Targets;
+    
+    // Set default max log level. See [DevOps.Terminal](./README.TERMINAL.md)
+    // DevOps.Terminal.Out.MaxLogLevel = LogLevel.Verbose;
 
-// Run all Bullseye Targets with the System.CommandLine library.
-RunAndExit(IEnumerable<string> args, string loggerPrefix);  // void
+    // Write a text to the output
+    Write(string message, LogLevel.Message);
+    Write(string message, LogLevel.Debug);
+    Write(string message); // Default to Message
+    
+    // Write messages to the output on a new line.
+    WriteLine(string message, LogLevel.Error);
+    WriteLine(string message);
+```
 
-// Get current script directory
-GetScriptFolder();  // string
+### Execute Commands
 
-// Create directory if not exists
-EnsureDirectoryExists(string path);  // void
+All commands are executed in the default system terminal. In cmd.exe for Windows and /bin/sh for Mac and Linux.
 
-// Remove and re-create directory.
-CleanDirectory(string path);  // void
+```csharp
+    using static DevOpsTargets.Targets;
 
-// Delete all passed paths
-DeleteAllFilesAndFolders(params string[] paths);  // void
+    // Start a new command (don't wait for result). Only first argument is required. See DevOps.Terminal.Commands.Command.CreateAndStart.
+    var command = CommandStart("sleep 13", workingDirectory: "/usr", outputLogLevel: LogLevel.Verbose);
+    var command = CommandStart("echo Test");
+    
+    // Start a new command and wait for result. Verify exit code.
+    var commandResult = CommandExec("sleep 13", workingDirectory: null, outputLogLevel: LogLevel.Verbose, validExitCode: 0);
 
-// Write messages to the output.
-Write(string message, LogLevel logLevel = LogLevel.Message);  // void
+    // Exec(...) executes all commands in the same terminal instance. See DevOps.Terminal.Terminals.TerminalSingleton.DefaultTerminal.
+    // Example (Windows):
+    // 
+    // Exec("set TEST=1");
+    // Exec("echo %TEST%"); // 1
 
-// Write messages to the output on a new line.
-WriteLine(string message, LogLevel logLevel = LogLevel.Message);  // void
+    // Execute a command in a specific directory. Wait for the result.
+    var commandResult = Exec("dir", workingDirectory: "c:\\");
 
-// Start a shell command for the current OS.
-ShellCommand(string command, string workingDirectory = null, LogLevel outputLogLevel = LogLevel.Verbose, bool doubleEscapeLinux = true);  // Command
+    // Execute a command and output the result as Message. Do not validate exit code.
+    var commandResult = Exec("dir", LogLevel.Message, validExitCode: null);
+    commandResult.Output; // output
+    commandResult.ExitCode; // 0
 
-// Start a shell command for the current OS and wait result.
-Shell(string command, string workingDirectory = null, LogLevel outputLogLevel = LogLevel.Verbose);  // string
+    // The same as the above. See DevOps.Terminal.Terminals.Terminal.Exec(...);
+    Exec(TerminalCommand.CreateParse("dir", logLevel: HostLogLevel.Message), validExitCode: null);
+```
 
-// Start a shell command for the current OS and wait result if test command fail.
-ShellInstall(string testCommand, string installCommand, string workingDirectory = null, LogLevel outputLogLevel = LogLevel.Verbose);  // string
+### Packages and Installers
+```csharp
+    using static DevOpsTargets.Targets;
 
-// Merge transform .json into another .json
-Transform.TransformSettingsJson(string pathToSettingsJson, string pathToTransformJson);  // void
+    // Install NodeJs version. Both Windows and Linux.
+    NodeJs.Install("14.17.1");
 
-// Find value of a property in json.
-Transform.FindPropertyValueInJson(string pathToJson, string propertyName);  // string
+    // Find NodeJs and set NODE_PATH if not set.
+    NodeJs.SetNodePath();
 
-// Find value in XML by xpath
-Transform.GetXmlXPathValue(string pathToXml, string xpath);  // string
+    // Install Java jdk, If not installed.
+    Java.Install("openjdk@1.15.0");
 
-// Replace ${value} in a text file
-Transform.ReplaceInFile(string pathToFile, string pathToNewFile, params EnvValue[] values);  // void
+    // Install NPM package, globally.
+    Npm.InstallGlobal("@angular/cli");
 
-// Build csproj file
-DotNet.Build(string pathToProject, string configuration = "Debug");  // void
+    // Run 'npm install' in the provided folder.
+    Npm.Install("c:\\my-project");
 
-// Publish csproj file
-DotNet.Publish(string pathToProject, string pathToOutput, string configuration = "Release");  // void
+    // Run 'npm ci' in the folder. Provide cache folder path if needed.
+    Npm.Ci("c:\\my-project", cacheFolder: null);
 
-// Test csproj file
-DotNet.Test(string pathToProject, string configuration = "Debug", string pathToOutput = null);  // void
+    // Run a npm command.
+    Npm.Run("test", pathToFolder: "c:\\my=project");
+```
 
-// Test with coverage csproj file
-DotNet.TestWithCoverage(string pathToProject, string pathToOutput, string configuration = "Debug", TestCoverageFormat formats = TestCoverageFormat.Cobertura, params TestLogInfo[] loggers);  // void
+### Files and Directories
+```csharp
+    using static DevOpsTargets.Targets;
 
-// Install NodeJs version if  NodeJs was never installed.
-NodeJs.Install(string version);  // void
+    // Gets the calling asembly or c# script folder path.
+    var currentPath = GetScriptFolder();
 
-// Execute `npm install` in folder.
-Npm.Install(string pathToFolder);  // void
+    // Ensure the directory exists.
+    EnsureDirectoryExists("c:\\Temp");
 
-// Execute `npm ci --no-optional ..` in folder.
-Npm.Ci(string pathToFolder, string cacheFolder = null");  // void
+    // Deletes all provided files and folders as params.
+    DeleteAllFilesAndFolders("c:\\Temp", "d:\\image.png" /*, ...*/);
 
-// Install npm package globally is not already installed. Example InstallGlobal("@angular/cli");
-Npm.InstallGlobal(string package);  // void
+    // Deletes and re-create the folder.
+    CleanDirectory("c:\\publish");
 
-// Run NPM command.
-Npm.Run(string command, string pathToFolder);  // void
+    // Get a temp system filename. Example: "c:\Users\my-user\AppData\Local\Temp\72f69d35e54b40e29d9849b71e43a7dc.png".
+    var tempFileName = GetTempFileName(".png");
+
+    // Create multi-line content from lines as arguments.
+    var content = GetContentFromLines("Line 1", "Line 2");
+```
+
+### .NET and Transforms
+```csharp
+    using static DevOpsTargets.Targets;
+
+    // Merge transform .json into another .json
+    Transform.TransformSettingsJson(pathToSettingsJson, pathToTransformJson);
+
+    // Find value of a property in json.
+    string value = Transform.FindPropertyValueInJson(pathToJson, propertyName);
+
+    // Find value in XML by xpath
+    string value = Transform.GetXmlXPathValue(pathToXml, xpath);
+
+    // Replace ${value} in a text file
+    Transform.ReplaceInFile(pathToFile, pathToNewFile, params EnvValue[] values);
+
+    // Install .NET SDK when missing
+    DotNet.Sdk.Install("5.0");
+
+    // Build csproj file
+    DotNet.Build(pathToCsProj, configuration: "Debug");
+
+    // Publish csproj file
+    DotNet.Publish(pathToCsProj, pathToOutput, configuration: "Release");
+
+    // Test csproj file
+    DotNet.Test(string pathToCsProj, configuration: "Debug", pathToTrxOutput: null);
+
+    // Test with coverage csproj file
+    DotNet.TestWithCoverage(pathToCsProject, pathToTestResults, configuration: "Debug", formats: TestCoverageFormat.Cobertura, DotNetLoggers.JUnit);
+```
+
+### SonarScanner
+```csharp
+    using static DevOpsTargets.Targets;
+
+    // Run sonar scanner. See the extended example.
+    Sonarqube.RunScanner(() => DotNet.Build(solutionDir), solutionDir, key: "my-key", version: "1.0.0", branch: "main");
 ```
 
 Also see [samples/](samples/).
