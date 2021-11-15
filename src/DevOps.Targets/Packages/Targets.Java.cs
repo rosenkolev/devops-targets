@@ -7,7 +7,7 @@ namespace DevOps
     /// <summary>Targets main class.</summary>
     public static partial class Targets
     {
-        /// <summary>Java related tasts.</summary>
+        /// <summary>Java related tasks.</summary>
         public static class Java
         {
             /// <summary>Install the specified version.</summary>

@@ -105,7 +105,7 @@ All commands are executed in the default system terminal. In cmd.exe for Windows
 ```csharp
     using static DevOpsTargets.Targets;
 
-    // Gets the calling asembly or c# script folder path.
+    // Gets the calling assembly or c# script folder path.
     var currentPath = GetScriptFolder();
 
     // Ensure the directory exists.

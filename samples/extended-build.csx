@@ -34,20 +34,20 @@ Target("dotnet-test", "Unit Tests", () => DotNet.TestWithCoverage(pathToTests, p
 Target("sonarscanner-install", () => Exec("dotnet tool install -g dotnet-sonarscanner", validExitCode: null));
 Target("jrk-install", () => Java.Install("openjdk@1.15.0"));
 Target("dotnet-sdk3-install", "Install .NET SDK 3.1", () => DotNet.Sdk.Install("3.1"));
-Target("build-for-scan", "Build solution for dependancy scan", () => {
+Target("build-for-scan", "Build solution for dependency scan", () => {
     DotNet.Sdk.SetMsBuildSdksPath();
     DotNet.Build(pathToAdmin, "Debug");
     DotNet.Build(pathToApi, "Debug");
     DotNet.Build(pathToTests, "Debug");
 });
-Target("scan", "OWASP Dependancy Scan", DependsOn("dotnet-sdk3-install", "jrk-install", "build-for-scan"),() => {
+Target("scan", "OWASP Dependency Scan", DependsOn("dotnet-sdk3-install", "jrk-install", "build-for-scan"),() => {
     var executePath = InstallDependencyCheck("6.3.1");
     EnsureDirectoryExists(pathToTestResult);
     Exec(TerminalCommand.Cd(solutionDir));
     Exec($"{executePath} --project {projectName} --scan \"**/bin/Debug/net5.0/**/*.dll\" --dotnet /usr/bin/dotnet -f JSON -f HTML -o TestResults/");
 });
 
-Target("sonarqube", "SonarQube Analisys", DependsOn("sonarscanner-install", "node-install", "jrk-install"), () => {
+Target("sonarqube", "SonarQube Analysis", DependsOn("sonarscanner-install", "node-install", "jrk-install"), () => {
     var version = Transform.GetXmlXPathValue(pathToApiProject, "/PropertyGroup/Version");
     var sdk = Transform.GetXmlXPathValue(pathToApiProject, "/PropertyGroup/TargetFramework");
     var branch = ValueForOption<string>("--branch");
