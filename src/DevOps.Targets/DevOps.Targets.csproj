@@ -2,7 +2,7 @@
   <PropertyGroup Label="Globals">
     <TargetFrameworks>net5.0;net6.0</TargetFrameworks>
     <LangVersion>latest</LangVersion>
-    <Version>1.2.0</Version>
+    <Version>1.2.1</Version>
     <Product>DevOpsTargets</Product>
     <RootNamespace>DevOps</RootNamespace>
     <PackageId>DevOpsTargets</PackageId>

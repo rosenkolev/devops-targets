@@ -3,6 +3,8 @@
 [![Nuget downloads](https://img.shields.io/nuget/v/devopstargets.svg)](https://www.nuget.org/packages/DevOpsTargets/)
 [![Nuget](https://img.shields.io/nuget/dt/devopstargets)](https://www.nuget.org/packages/DevOpsTargets/)
 [![Build status](https://github.com/rosenkolev/devops-targets/actions/workflows/github-actions.yml/badge.svg)](https://github.com/rosenkolev/devops-targets/actions/workflows/github-actions.yml)
+[![spell check](https://github.com/rosenkolev/devops-targets/actions/workflows/spell-check.yml/badge.svg)](https://github.com/rosenkolev/devops-targets/actions/workflows/spell-check.yml)
+[![coverage](https://codecov.io/gh/rosenkolev/devops-targets/branch/main/graph/badge.svg?token=V9E0GSDN34)](https://codecov.io/gh/rosenkolev/devops-targets)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/rosenkolev/devops-targets/blob/main/LICENSE)
 
 **This are helper deployment scripts used for building, testing deploying application with .NET script or .NET SDK app.**
@@ -108,6 +110,9 @@ All commands are executed in the default system terminal. In cmd.exe for Windows
     // Gets the calling assembly or c# script folder path.
     var currentPath = GetScriptFolder();
 
+    // Gets the user home directory.
+    var home = GetHomeFolder();
+
     // Ensure the directory exists.
     EnsureDirectoryExists("c:\\Temp");
 
@@ -143,6 +148,13 @@ All commands are executed in the default system terminal. In cmd.exe for Windows
     // Install .NET SDK when missing
     DotNet.Sdk.Install("5.0");
 
+    // Install .NET tool. Global by default.
+    DotNet.Tool.Install("ef");
+    DotNet.Tool.Install("dotnetsay ", version: "1.0.0", global: false);
+
+    // Get dotnet tool path. Example %USERPROFILE%\.dotnet\tools\.store\ef for Windows.
+    DotNet.Tool.GetGlobalToolStorePath("ef");
+
     // Build csproj file
     DotNet.Build(pathToCsProj, configuration: "Debug");
 
@@ -160,8 +172,11 @@ All commands are executed in the default system terminal. In cmd.exe for Windows
 ```csharp
     using static DevOpsTargets.Targets;
 
+    // Transform global SonarQube settings with replace variables. The first sdk in the list is the primary one, others a backups.
+    Sonarqube.TransformGlobalSettings("c:\\Project\\SonarQube.MySettings.xml", sdks: new [] { "net6.0", "net5.0" }, new EnvValue("BASE_PATH", "c:\\Project"));
+
     // Run sonar scanner. See the extended example.
-    Sonarqube.RunScanner(() => DotNet.Build(solutionDir), solutionDir, key: "my-key", version: "1.0.0", branch: "main");
+    Sonarqube.RunScanner(() => DotNet.Build(solutionDir), solutionDir, organization: "Org", key: "my-key", version: "1.0.0", branch: "main");
 ```
 
 Also see [samples/](samples/).
