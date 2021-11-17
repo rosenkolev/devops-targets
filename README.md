@@ -16,7 +16,7 @@ Use with dotnet script;
 
 using System.IO;
 using static Bullseye.Targets;
-using static DevOpsTargets.Targets;
+using static DevOps.Targets;
 
 var pathToApp = Path.Combine(GetScriptFolder(), "MyApp");
 Target("check-version", "Check .NET CLI version", () => Exec("dotnet --version"));
@@ -30,7 +30,7 @@ RunAndExit(Args, loggerPrefix: "My App");
 
 ### Write Messages
 ```csharp
-    using static DevOpsTargets.Targets;
+    using static DevOps.Targets;
     
     // Set default max log level. See [DevOps.Terminal](./README.TERMINAL.md)
     // DevOps.Terminal.Out.MaxLogLevel = LogLevel.Verbose;
@@ -50,7 +50,7 @@ RunAndExit(Args, loggerPrefix: "My App");
 All commands are executed in the default system terminal. In cmd.exe for Windows and /bin/sh for Mac and Linux.
 
 ```csharp
-    using static DevOpsTargets.Targets;
+    using static DevOps.Targets;
 
     // Start a new command (don't wait for result). Only first argument is required. See DevOps.Terminal.Commands.Command.CreateAndStart.
     var command = CommandStart("sleep 13", workingDirectory: "/usr", outputLogLevel: LogLevel.Verbose);
@@ -79,7 +79,7 @@ All commands are executed in the default system terminal. In cmd.exe for Windows
 
 ### Packages and Installers
 ```csharp
-    using static DevOpsTargets.Targets;
+    using static DevOps.Targets;
 
     // Install NodeJs version. Both Windows and Linux.
     NodeJs.Install("14.17.1");
@@ -105,7 +105,7 @@ All commands are executed in the default system terminal. In cmd.exe for Windows
 
 ### Files and Directories
 ```csharp
-    using static DevOpsTargets.Targets;
+    using static DevOps.Targets;
 
     // Gets the calling assembly or c# script folder path.
     var currentPath = GetScriptFolder();
@@ -129,9 +129,18 @@ All commands are executed in the default system terminal. In cmd.exe for Windows
     var content = GetContentFromLines("Line 1", "Line 2");
 ```
 
+### Download
+```csharp
+    using static DevOps.Packages;
+
+    Downloader.DownloadFile("nuget", "6.0.0", "nuget.exe", "https://dist.nuget.org/win-x86-commandline/v6.0.0/nuget.exe");
+
+    Downloader.DownloadAndExtractZipFile("my-tool", "1.0.0", "my-tool.zip", "https://dummy-domain.test/my-tool/zip");
+```
+
 ### .NET and Transforms
 ```csharp
-    using static DevOpsTargets.Targets;
+    using static DevOps.Targets;
 
     // Merge transform .json into another .json
     Transform.TransformSettingsJson(pathToSettingsJson, pathToTransformJson);
@@ -150,7 +159,11 @@ All commands are executed in the default system terminal. In cmd.exe for Windows
 
     // Install .NET tool. Global by default.
     DotNet.Tool.Install("ef");
-    DotNet.Tool.Install("dotnetsay ", version: "1.0.0", global: false);
+    DotNet.Tool.Install("dotnetsay", version: "1.0.0", global: false);
+
+    // Uninstall .NET tool. Global by default.
+    DotNet.Tool.Uninstall("ef");
+    DotNet.Tool.Uninstall("dotnetsay", global: false);
 
     // Get dotnet tool path. Example %USERPROFILE%\.dotnet\tools\.store\ef for Windows.
     DotNet.Tool.GetGlobalToolStorePath("ef");
@@ -170,7 +183,7 @@ All commands are executed in the default system terminal. In cmd.exe for Windows
 
 ### SonarScanner
 ```csharp
-    using static DevOpsTargets.Targets;
+    using static DevOps.Targets;
 
     // Transform global SonarQube settings with replace variables. The first sdk in the list is the primary one, others a backups.
     Sonarqube.TransformGlobalSettings("c:\\Project\\SonarQube.MySettings.xml", sdks: new [] { "net6.0", "net5.0" }, new EnvValue("BASE_PATH", "c:\\Project"));

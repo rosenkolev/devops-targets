@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.IO.Compression;
 using System.Net;
 
 namespace DevOps.Packages
@@ -29,6 +30,19 @@ namespace DevOps.Packages
             }
 
             return pathToFile;
+        }
+
+        /// <summary>Downloads and extract a zip archive file.</summary>
+        public static string DownloadAndExtractZipFile(string name, string version, string fileName, string url)
+        {
+            var pathToDirectory = GetToolPath(name, version, string.Empty);
+            if (!Directory.Exists(pathToDirectory))
+            {
+                var path = DownloadFile(name, version, fileName, url);
+                ZipFile.ExtractToDirectory(path, pathToDirectory);
+            }
+
+            return pathToDirectory;
         }
     }
 }

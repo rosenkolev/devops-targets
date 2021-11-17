@@ -2,7 +2,6 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
 
 using DevOps.Terminal.Commands;
@@ -48,15 +47,23 @@ namespace DevOps
                 /// <param name="version">An optional version.</param>
                 /// <param name="global">Is it a global tool.</param>
                 public static CommandResult Install(string name, string version = null, bool global = true) =>
-                    Install(name, global ? "-g" : null, string.IsNullOrEmpty(version) ? null : ("--version " + version));
+                    Exec(string.Concat("dotnet tool install ", name, GetArgs(global, version)), validExitCode: null);
+
+                /// <summary>Uninstall a .NET tool.</summary>
+                /// <param name="name">The tool name.</param>
+                /// <param name="global">Is it a global tool.</param>
+                public static CommandResult Uninstall(string name, bool global = true) =>
+                    Exec(string.Concat("dotnet tool uninstall ", name, GetArgs(global, null)), validExitCode: null);
 
                 /// <summary>Get a global .NET tool files directory.</summary>
                 public static string GetGlobalToolStorePath(string name) =>
                     Path.Combine(GetHomeFolder(), ".dotnet", "tools", ".store", name);
 
-                /// <summary>Install a .NET tool with arguments.</summary>
-                internal static CommandResult Install(string name, params string[] args) =>
-                    Exec(string.Concat("dotnet tool install ", name, string.Join(' ', args.Where(arg => arg != null))), validExitCode: null);
+                /// <summary>Get tool args.</summary>
+                internal static string GetArgs(bool global, string version) =>
+                    string.Concat(
+                        global ? " --global" : string.Empty,
+                        string.IsNullOrEmpty(version) ? string.Empty : (" --version " + version));
             }
         }
 

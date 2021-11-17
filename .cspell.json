@@ -57,6 +57,8 @@
     "sonarqube",
     "cobertura",
     "newtonsoft",
-    "jabba"
+    "jabba",
+    "dotnetsay",
+    "USERPROFILE"
   ]
 }
