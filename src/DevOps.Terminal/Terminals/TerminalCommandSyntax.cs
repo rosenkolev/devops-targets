@@ -23,7 +23,7 @@ namespace DevOps.Terminal.Terminals
         public abstract IEnumerable<string> BuildInputClearWildCards(params string[] commands);
 
         /// <summary>Creates the argument string.</summary>
-        protected string CreateArgumentString(string[] arguments, Action<string, StringBuilder> appendArgument)
+        protected static string CreateArgumentString(string[] arguments, Action<string, StringBuilder> appendArgument)
         {
             var builder = new StringBuilder();
             var isFirstArgument = true;

@@ -1,5 +1,7 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace DevOps
 {
@@ -8,6 +10,12 @@ namespace DevOps
     {
         /// <summary>Gets the script folder.</summary>
         public static string GetScriptFolder([CallerFilePath] string path = null) => Path.GetDirectoryName(path);
+
+        /// <summary>Gets the user home folder.</summary>
+        public static string GetHomeFolder() =>
+            RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ?
+            Environment.GetEnvironmentVariable("USERPROFILE") :
+            Environment.GetEnvironmentVariable("HOME");
 
         /// <summary>Ensures the directory exists.</summary>
         public static void EnsureDirectoryExists(string pathToDirectory)

@@ -10,6 +10,15 @@
     {
       "filename": "{.cspell.json,*.svg}",
       "enabled": false
+    },
+    {
+      "filename": "*.csx",
+      "words": [
+        "appsettings",
+        "sonarscanner",
+        "analyzers",
+        "owasp"
+      ]
     }
   ],
   "ignorePaths": [
@@ -24,6 +33,7 @@
     "**/launchSettings.json"
   ],
   "words": [
+    "cref",
     "msbuild",
     "analyzer",
     "analizers",
@@ -46,6 +56,9 @@
     "kolev",
     "sonarqube",
     "cobertura",
-    "newtonsoft"
+    "newtonsoft",
+    "jabba",
+    "dotnetsay",
+    "USERPROFILE"
   ]
 }

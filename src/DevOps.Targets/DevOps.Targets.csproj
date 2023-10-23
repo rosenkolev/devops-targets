@@ -1,8 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup Label="Globals">
-    <TargetFramework>net5.0</TargetFramework>
-    <Version>1.0.0</Version>
+    <TargetFrameworks>net5.0;net6.0</TargetFrameworks>
+    <LangVersion>latest</LangVersion>
+    <Version>1.2.2</Version>
     <Product>DevOpsTargets</Product>
+    <RootNamespace>DevOps</RootNamespace>
     <PackageId>DevOpsTargets</PackageId>
     <Authors>Rosen Kolev</Authors>
     <Description>A tools that are helping when deploying .NET and other applications.</Description>
@@ -11,14 +13,13 @@
     <PackageTags>devops,targets,build-scripts,deploy</PackageTags>
     <PackageProjectUrl>https://github.com/rosenkolev/devops-targets</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile Condition="'$(PACK_README)'=='true'">README.md</PackageReadmeFile>
     <PackageIcon>icon-128.png</PackageIcon>
     <Copyright>Copyright 2021 (c) Rosen Kolev</Copyright>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <IncludeSymbols>true</IncludeSymbols>
+    <DisableImplicitNamespaceImports>true</DisableImplicitNamespaceImports>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <NoWarn>$(NoWarn);1591</NoWarn>
-    <RootNamespace>DevOps</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Label="Code Analysis">
     <AnalysisLevel>latest</AnalysisLevel>
@@ -29,17 +30,17 @@
   </PropertyGroup>
   <ItemGroup Label="NuGet Packages">
     <PackageReference Include="System.CommandLine" Version="2.0.0-beta1.21308.1" />
-    <PackageReference Include="Bullseye" Version="3.7.*" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Bullseye" Version="3.8.*" />
   </ItemGroup>
   <ItemGroup Label="Projects and Files Reference">
     <ProjectReference Include="..\DevOps.Terminal\DevOps.Terminal.csproj" />
     <AdditionalFiles Include="..\tools\stylecop.json" />
-    <None Include="..\..\resources\icons\icon-128.png" Pack="true" PackagePath="" />
+    <None Include="..\..\resources\icons\icon-128.png" Pack="true" PackagePath="" Link="Properties\icon-128.png" />
+    <None Include="..\..\README.md" Pack="true" PackagePath="" Link="Properties\README.md" />
   </ItemGroup>
   <ItemGroup Label="Code Analyzers">
     <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta*" PrivateAssets="All" />
-    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.26.0.*" PrivateAssets="All" />
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.29.0.*" PrivateAssets="All" />
     <PackageReference Include="CodeCracker.CSharp" Version="1.1.*" PrivateAssets="All" />
     <PackageReference Include="RefactoringEssentials" Version="5.6.*" PrivateAssets="All" />
     <PackageReference Include="Menees.Analyzers" Version="3.0.*" PrivateAssets="All" />

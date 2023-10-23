@@ -2,8 +2,8 @@
 
 namespace DevOps.Terminal.Terminals
 {
-    /// <summary>The terminal singelton.</summary>
-    public static class TerminalSingelton
+    /// <summary>The terminal singleton.</summary>
+    public static class TerminalSingleton
     {
         /// <summary>The default instance.</summary>
         private static Terminal defaultInstance;
