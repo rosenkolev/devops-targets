@@ -33,7 +33,7 @@ namespace DevOps.Tests
                 TerminalCommand.Create("echo", "Test1") &
                 TerminalCommand.Create("echo", "Test2");
 
-            var result = TerminalSingelton.DefaultTerminal.Exec(command);
+            var result = TerminalSingleton.DefaultTerminal.Exec(command);
             Assert.AreEqual($"Test1{Environment.NewLine}Test2", result.Output);
         }
 
@@ -46,7 +46,7 @@ namespace DevOps.Tests
                 TerminalCommand.Create("echo", "Test2") &
                 TerminalCommand.Create("echo", "Test3");
 
-            var result = TerminalSingelton.DefaultTerminal.Exec(command);
+            var result = TerminalSingleton.DefaultTerminal.Exec(command);
             Assert.AreEqual($"Test1{Environment.NewLine}Test2{Environment.NewLine}Test3", result.Output);
         }
     }
