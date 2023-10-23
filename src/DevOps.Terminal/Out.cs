@@ -29,7 +29,10 @@ namespace DevOps.Terminal
 
         /// <summary>Creates the console output.</summary>
         public static HostOutput CreateConsoleOutput() =>
-            new HostOutput(Console.Out, new HostPalette(), Prefix, MaxLogLevel);
+            new HostOutput(
+                Console.Out,
+                MaxLogLevel,
+                new HostOutputFormatter(new HostPalette(), Prefix));
 
         /// <summary>Re-initialize console output.</summary>
         public static HostOutput ReInitConsoleOutput(LogLevel logLevel, string prefix)

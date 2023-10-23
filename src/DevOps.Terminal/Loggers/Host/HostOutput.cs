@@ -4,77 +4,88 @@ using System.Linq;
 
 using DevOps.Terminal.Loggers.Abstraction;
 
-namespace DevOps.Terminal.Loggers.Host
+namespace DevOps.Terminal.Loggers.Host;
+
+/// <summary>A host writer class.</summary>
+public sealed class HostOutput : IOutput
 {
-    /// <summary>A host writer class.</summary>
-    public sealed class HostOutput : IOutput
+    private readonly TextWriter _writer;
+    private readonly LogLevel _maxLogLevel;
+    private readonly HostOutputFormatter _formatter;
+    private bool _isLineStart = true;
+
+    /// <summary>Initializes a new instance of the <see cref="HostOutput"/> class.</summary>
+    public HostOutput(TextWriter writer, HostPalette palette, string prefix, LogLevel maxLogLevel)
+        : this(writer, maxLogLevel, new HostOutputFormatter(palette, prefix))
     {
-        private readonly string _prefix;
-        private readonly TextWriter _writer;
-        private readonly HostPalette _p;
-        private readonly LogLevel _maxLogLevel;
+    }
 
-        /// <summary>Initializes a new instance of the <see cref="HostOutput"/> class.</summary>
-        public HostOutput(TextWriter writer, HostPalette palette, string prefix, LogLevel maxLogLevel)
+    /// <summary>Initializes a new instance of the <see cref="HostOutput"/> class.</summary>
+    public HostOutput(TextWriter writer, LogLevel maxLogLevel, HostOutputFormatter formatter)
+    {
+        _writer = writer;
+        _maxLogLevel = maxLogLevel;
+        _formatter = formatter;
+    }
+
+    /// <summary>Writes the specified message.</summary>
+    public void Write(string message, LogLevel logLevel)
+    {
+        if (logLevel > _maxLogLevel ||
+            string.IsNullOrEmpty(message))
         {
-            _p = palette;
-            _writer = writer;
-            _prefix = prefix;
-            _maxLogLevel = maxLogLevel;
+            return;
         }
 
-        private string Prefix => $"{_p.Prefix}{_prefix}: {_p.Reset}";
+        var msgs = CleanUp(message)
+            .Split(Environment.NewLine)
+            .ToArray();
 
-        /// <summary>Writes the specified message.</summary>
-        public void Write(string message, LogLevel logLevel)
+        var lastLineIndex = msgs.Length - 1;
+        for (var index = 0; index < msgs.Length; index++)
         {
-            var level = (int)logLevel;
-            if (logLevel > _maxLogLevel ||
-                string.IsNullOrEmpty(message))
+            WriteLineStart(logLevel);
+            AppendMessage(msgs[index], logLevel);
+            if (msgs.Length > 1 && index < lastLineIndex)
             {
-                return;
-            }
-
-            var offset = new string(' ', level * 2);
-            var color = logLevel switch
-            {
-                LogLevel.Error => _p.Error,
-                LogLevel.Message => _p.Message,
-                LogLevel.Info => _p.Information,
-                LogLevel.Verbose => _p.Debug,
-                LogLevel.Debug => _p.Trace,
-                _ => _p.None,
-            };
-
-            var msgs = CleanUp(message)
-                .Split(Environment.NewLine)
-                .Where(msg => !string.IsNullOrWhiteSpace(msg))
-                .Select(msg => Message(color, offset + msg));
-
-            _writer.Write(string.Join(Environment.NewLine, msgs));
-        }
-
-        /// <summary>Writes the specified message with new line.</summary>
-        public void WriteLine(string message, LogLevel logLevel)
-        {
-            if (logLevel <= _maxLogLevel)
-            {
-                Write(message, logLevel);
                 WriteLine();
             }
         }
-
-        /// <summary>Writes a new line.</summary>
-        public void WriteLine() =>
-            _writer.WriteLine();
-
-        private string Message(string color, string text) => string.Concat(Prefix, color, text, _p.Reset);
-
-        private string CleanUp(string message) => message
-            .Replace("\u001B[0m", string.Empty)
-            .Replace("\u001B[32m", string.Empty)
-            .Replace("\u001B[39m", string.Empty)
-            .Replace("\u001B[94m", string.Empty)
-            .Replace("\u001B[96m", string.Empty);
     }
+
+    /// <summary>Writes the specified message with new line.</summary>
+    public void WriteLine(string message, LogLevel logLevel)
+    {
+        if (logLevel <= _maxLogLevel)
+        {
+            Write(message, logLevel);
+            WriteLine();
+        }
+    }
+
+    /// <summary>Writes a new line.</summary>
+    public void WriteLine()
+    {
+        _writer.WriteLine();
+        _isLineStart = true;
+    }
+
+    private void AppendMessage(string message, LogLevel logLevel) =>
+        _writer.Write(_formatter.FormatMessage(message, logLevel));
+
+    private void WriteLineStart(LogLevel logLevel)
+    {
+        if (_isLineStart)
+        {
+            _writer.Write(_formatter.GetLinePrefix(logLevel));
+            _isLineStart = false;
+        }
+    }
+
+    private static string CleanUp(string message) => message
+        .Replace("\u001B[0m", string.Empty)
+        .Replace("\u001B[32m", string.Empty)
+        .Replace("\u001B[39m", string.Empty)
+        .Replace("\u001B[94m", string.Empty)
+        .Replace("\u001B[96m", string.Empty);
 }

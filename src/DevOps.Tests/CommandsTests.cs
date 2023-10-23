@@ -1,4 +1,6 @@
-﻿using DevOps.Terminal.Terminals;
+﻿using System;
+
+using DevOps.Terminal.Terminals;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -32,7 +34,7 @@ namespace DevOps.Tests
                 TerminalCommand.Create("echo", "Test2");
 
             var result = TerminalSingelton.DefaultTerminal.Exec(command);
-            Assert.AreEqual("Test1 Test2", result.Output);
+            Assert.AreEqual($"Test1{Environment.NewLine}Test2", result.Output);
         }
 
         [TestMethod]
@@ -45,7 +47,7 @@ namespace DevOps.Tests
                 TerminalCommand.Create("echo", "Test3");
 
             var result = TerminalSingelton.DefaultTerminal.Exec(command);
-            Assert.AreEqual("Test1 Test2 Test3", result.Output);
+            Assert.AreEqual($"Test1{Environment.NewLine}Test2{Environment.NewLine}Test3", result.Output);
         }
     }
 }

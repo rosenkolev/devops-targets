@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 
+using DevOps.DotNet;
 using DevOps.Terminal.Terminals;
 
 namespace DevOps
@@ -96,6 +96,10 @@ namespace DevOps
                         "-p:AnalysisLevel=none",
                         "-l",
                         DotNetLoggers.Trx.Build(pathToOutput)));
+
+            /// <summary>Installs the SDK version.</summary>
+            public static void InstallSdk(string version) =>
+                DotnetSdkVersionInstaller.Install(version);
         }
 
         /// <summary>Tests logger info.</summary>

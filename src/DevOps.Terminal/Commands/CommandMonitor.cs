@@ -50,22 +50,23 @@ namespace DevOps.Terminal.Commands
             return message;
         }
 
-        private static string TrimEnd(string input, string value) =>
+        /// <summary>Trim a string from the end.</summary>
+        protected static string TrimEnd(string input, string value) =>
                 input.EndsWith(value, StringComparison.InvariantCulture) ?
-                input.Substring(0, input.Length - value.Length) :
+                input[..^value.Length] :
                 input;
 
         private static bool MatchWildCard(string input, string pattern)
         {
             if (pattern[0] == '*')
             {
-                return input.EndsWith(pattern.Substring(1), StringComparison.InvariantCultureIgnoreCase);
+                return input.EndsWith(pattern[1..], StringComparison.InvariantCultureIgnoreCase);
             }
 
             var lastIndex = pattern.Length - 1;
             if (pattern[lastIndex] == '*')
             {
-                return input.StartsWith(pattern.Substring(0, lastIndex), StringComparison.InvariantCultureIgnoreCase);
+                return input.StartsWith(pattern[..lastIndex], StringComparison.InvariantCultureIgnoreCase);
             }
 
             return input.Equals(pattern, StringComparison.InvariantCultureIgnoreCase);
