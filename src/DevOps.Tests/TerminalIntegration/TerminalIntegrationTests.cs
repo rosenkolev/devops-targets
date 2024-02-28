@@ -25,8 +25,8 @@ namespace DevOps.Tests.TerminalIntegration
                 offsetRation: 0,
                 noColor: true);
 
-            using var writter = MemoryTextStream.Create();
-            var hostOutput = new HostOutput(writter.Writer, LogLevel.Message, formatter);
+            using var writer = MemoryTextStream.Create();
+            var hostOutput = new HostOutput(writer.Writer, LogLevel.Message, formatter);
             var textOutput = new TextOutput();
             var monitor = new TerminalMonitor(logger, textOutput, hostOutput);
             var syntax = TerminalIn.DefaultTerminalSyntax;
@@ -37,7 +37,7 @@ namespace DevOps.Tests.TerminalIntegration
                 TerminalCommand.Create("echo", "Test2") &
                 TerminalCommand.Create("echo", "Test3"));
 
-            var value = writter.GetText().TrimEnd('\r', '\n');
+            var value = writer.GetText().TrimEnd('\r', '\n');
 
             Assert.AreEqual(value, result.Output);
         }
